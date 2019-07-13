@@ -1,42 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_appssas/ui/tab/First.dart';
+import 'package:flutter_appssas/ui/tab/Second.dart';
+import 'package:flutter_appssas/ui/tab/Third.dart';
 
 class SecondPage extends StatefulWidget {
   SecondPage({this.test});
 
   final String test;
 
-
   @override
-  _secondPageState createState() => _secondPageState();
+  _SecondPageState createState() => _SecondPageState();
 }
 //variable globales
 
 TabController controller;
 
+class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateMixin {
 
+  @override
+  void initState() {
+    super.initState();
 
-class _secondPageState extends State<SecondPage> {
+    // Initialize the Tab Controller
+    controller = new TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the Tab Controller
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: new Title(
-            color: Colors.red, child: new Text("Esta es la nueva pagina")),
-        bottom: getTabBar()
+          title: new Title(
+              color: Colors.red, child: new Text("Esta es la nueva pagina")),
+          bottom: getTabBar()
+
       ),
+        body: getTabBarView(<Widget>
+        [new First(),
+          new Second(),
+          new Third()
+        ]
+        )
     );
+
   }
 }
-
-
-
-
-void initState(){
-  super.initState();
-
-    controller = new TabController(length: 3, vsync: this);
-}
-
 
 TabBar getTabBar() {
   return new TabBar(
@@ -51,7 +65,15 @@ TabBar getTabBar() {
         icon: new Icon(Icons.directions),
       ),
     ],
+    controller: controller,
+  );
+}
 
+TabBarView getTabBarView(var tabs) {
+  return new TabBarView(
+    // Add tabs as widgets
+    children: tabs,
+    // set the controller
     controller: controller,
   );
 }
